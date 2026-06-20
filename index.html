@@ -105,15 +105,15 @@
 
         <!-- Luck Checker View -->
         <div id="view-luck-checker" class="view-section hidden">
-            <section class="card-inputs" style="border-color: #3b82f6;">
-                <h3 class="section-title" style="color: #3b82f6;">これまで回したガチャの合計回数</h3>
+            <section class="card-inputs">
+                <h3 class="section-title">これまで回したガチャの合計回数</h3>
                 <div style="padding: 12px 16px;">
                     <input type="number" id="luck-pulls-input" value="0" min="0" placeholder="例: 300" style="width: 100%; box-sizing: border-box; font-size: 1.1rem; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; outline: none; transition: border-color 0.2s;">
                 </div>
             </section>
 
-            <section class="card-inputs" style="border-color: #3b82f6;">
-                <h3 class="section-title" style="color: #3b82f6;">現在のピックアップ所持枚数</h3>
+            <section class="card-inputs">
+                <h3 class="section-title">現在のピックアップ所持枚数</h3>
                 <div class="bulk-actions" data-target="luck-current">
                     <span>一括設定:</span>
                     <button class="bulk-btn" data-val="0">0枚</button>
@@ -123,13 +123,13 @@
                 <div id="current-cards-luck" class="card-grid"></div>
             </section>
 
-            <button id="luck-calc-btn" class="primary-btn" style="border-bottom-color: #3b82f6; background: #2d3748;">ガチャ運を判定する！</button>
+            <button id="luck-calc-btn" class="primary-btn">ガチャ運を判定する！</button>
 
-            <section id="luck-result-section" class="result-section hidden" style="border-color: #3b82f6;">
+            <section id="luck-result-section" class="result-section hidden">
                 <h2>あなたのガチャ運偏差値は...</h2>
                 <h1 id="luck-result-score" style="font-size: 3rem; margin: 12px 0;">--.-</h1>
                 <div id="luck-result-text" class="result-pulls" style="font-size: 1.2rem; font-weight: bold; color: #fff;">判定中...</div>
-                <p class="result-note" style="border-left-color: #3b82f6;">※設定されたガチャ確率に対して、純粋な引きの強さを偏差値化しています。<br>※入力された合計回数から得られる「選べるURチケット」で交換できたであろう枚数は、自動的に結果から差し引かれます。</p>
+                <p class="result-note">※設定されたガチャ確率に対して、純粋な引きの強さを偏差値化しています。<br>※入力された合計回数から得られる「選べるURチケット」で交換できたであろう枚数は、自動的に結果から差し引かれます。</p>
             </section>
         </div>
     </main>

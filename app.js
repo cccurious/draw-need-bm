@@ -178,8 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function simulatePulls(P_target, typesCount, needs, initialTickets, probPercent) {
-        // Reduced to 2000 runs thanks to fixed seed, making it lightning fast
-        const runs = 2000; 
+        const runs = 5000; 
         let results = new Int32Array(runs);
         
         // Fixed seed so the random sequence is EXACTLY the same for every click
@@ -220,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showResult(bm, pulls, earnedTickets) {
         document.getElementById('result-bm').innerText = `${bm.toLocaleString()} BM`;
-        document.getElementById('result-pulls').innerText = `合計 ${pulls.toLocaleString()}連 (選べるURチケット ${earnedTickets.toLocaleString()}枚GET!)`;
+        document.getElementById('result-pulls').innerText = `合計 ${pulls.toLocaleString()}連`;
         
         resultSec.classList.remove('hidden');
         setTimeout(() => resultSec.classList.add('show'), 10);

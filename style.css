@@ -139,7 +139,8 @@ body {
 .setting-item input[type="range"] { width: 100%; margin-top: 4px; accent-color: var(--primary-color); }
 .setting-item input[type="number"] { padding: 8px; border: 1px solid var(--border-color); border-radius: 2px; font-size: 1rem; background: var(--bg-color); color: var(--text-color); font-weight: 500;}
 
-.template-buttons { display: flex; gap: 8px; margin-top: 20px; }
+.template-section { margin-bottom: 20px; }
+.template-buttons { display: flex; gap: 8px; }
 .tmpl-btn {
     flex: 1; padding: 10px 4px; font-size: 0.85rem; border: 2px solid var(--dark-border);
     background: var(--white); border-radius: 2px; cursor: pointer; color: var(--subdued-text); font-weight: bold;

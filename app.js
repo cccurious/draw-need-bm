@@ -127,6 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal.addEventListener('click', () => {
         formulaModal.classList.remove('show');
     });
+    formulaModal.addEventListener('click', (e) => {
+        if (e.target === formulaModal) {
+            formulaModal.classList.remove('show');
+        }
+    });
 
     // Calculation Logic
     const calcBtn = document.getElementById('calc-btn');

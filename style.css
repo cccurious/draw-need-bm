@@ -208,11 +208,12 @@ body {
 .modal-content h3 { margin-top: 0; color: var(--primary-color); border-bottom: 2px solid #edf2f7; padding-bottom: 12px; margin-bottom: 16px; font-size: 1.3rem;}
 .formula-label { font-size: 0.95rem; margin-bottom: 8px; margin-top: 16px; color: var(--primary-color); border-left: 3px solid var(--primary-color); padding-left: 8px;}
 .modal-content p { font-size: 0.9rem; margin-bottom: 12px; line-height: 1.6;}
-.close-modal-btn.primary-btn {
-    display: block; width: 100%; padding: 16px; font-size: 1.2rem; font-weight: bold;
-    background: var(--primary-color); color: var(--white); border: none; border-radius: 8px;
-    cursor: pointer; margin: 24px 0; box-shadow: 0 4px 6px rgba(249,115,22,0.3); transition: all 0.2s;
+.close-modal-btn {
+    display: block; width: 100%; padding: 16px; font-size: 1.1rem; font-weight: bold;
+    background: var(--dark-border); color: var(--white); border: none; border-radius: 8px;
+    cursor: pointer; margin-top: 24px; transition: all 0.2s;
 }
+.close-modal-btn:active { background: #4a5568; }
 
 /* Banner */
 .support-banner {

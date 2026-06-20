@@ -138,6 +138,51 @@ document.addEventListener('DOMContentLoaded', () => {
     menuBtn.addEventListener('click', toggleMenu);
     menuOverlay.addEventListener('click', toggleMenu);
 
+    // Routing Logic
+    const menuLinks = document.querySelectorAll('.menu-link');
+    const views = document.querySelectorAll('.view-section');
+    const headerTitle = document.getElementById('header-title');
+
+    menuLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const viewId = e.target.dataset.view;
+            if (!viewId) return;
+
+            // Update active link
+            menuLinks.forEach(l => l.classList.remove('active'));
+            e.target.classList.add('active');
+
+            // Update views
+            views.forEach(v => {
+                v.classList.remove('active');
+                v.classList.add('hidden');
+            });
+            const targetId = viewId === 'bm' ? 'view-bm-calc' : 'view-luck-checker';
+            const targetView = document.getElementById(targetId);
+            if (targetView) {
+                targetView.classList.remove('hidden');
+                targetView.classList.add('active');
+                
+                // Move settings section to be just above the primary button in the active view
+                const settingsSec = document.querySelector('.settings-section');
+                const primaryBtn = targetView.querySelector('.primary-btn');
+                if (settingsSec && primaryBtn) {
+                    targetView.insertBefore(settingsSec, primaryBtn);
+                }
+            }
+
+            // Update Header
+            if (viewId === 'bm') {
+                headerTitle.innerText = '#コンパス 必要BM計算';
+            } else {
+                headerTitle.innerText = 'ガチャ運偏差値チェッカー';
+            }
+
+            toggleMenu(); // close side menu
+        });
+    });
+
     // Accordion Logic
     const advancedToggle = document.getElementById('advanced-settings-toggle');
     const advancedContent = document.getElementById('advanced-settings-content');
@@ -313,6 +358,82 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!supportBanner.classList.contains('show')) {
             supportBanner.classList.add('show');
         }
+    }
+
+    // Luck Checker Logic
+    const luckCalcBtn = document.getElementById('luck-calc-btn');
+    const luckResultSec = document.getElementById('luck-result-section');
+    const luckScoreEl = document.getElementById('luck-result-score');
+    const luckTextEl = document.getElementById('luck-result-text');
+
+    if (luckCalcBtn) {
+        luckCalcBtn.addEventListener('click', () => {
+            const pulls = parseInt(document.getElementById('luck-pulls-input').value) || 0;
+            
+            if (pulls <= 0) {
+                luckScoreEl.innerText = '--.-';
+                luckTextEl.innerText = '回数を入力してください';
+                luckTextEl.style.color = '#fff';
+                luckResultSec.classList.remove('hidden');
+                return;
+            }
+
+            const multiplier = parseFloat(document.getElementById('target-card-multiplier').value);
+            const otherCards = parseFloat(document.getElementById('other-card-count').value);
+            const urRate = parseFloat(document.getElementById('total-ur-rate').value) / 100;
+
+            const pSpecific = (1 * multiplier) / ((numCards * multiplier) + otherCards) * urRate;
+            const P_any_target = pSpecific * numCards;
+
+            // A案: Users input purely what they pulled (Do not subtract tickets automatically)
+            let pureGachaHits = cardState.reduce((sum, state) => sum + state.current, 0);
+
+            const expected = pulls * P_any_target;
+            const variance = pulls * P_any_target * (1 - P_any_target);
+            const sd = Math.sqrt(variance);
+
+            let zScore = 0;
+            if (sd > 0) {
+                zScore = (pureGachaHits - expected) / sd;
+            }
+
+            let hensachi = 50 + (zScore * 10);
+            // Limit display range slightly to avoid wild numbers on extreme edges
+            hensachi = Math.max(10, Math.min(100, hensachi));
+
+            luckScoreEl.innerText = hensachi.toFixed(1);
+
+            if (hensachi >= 70) {
+                luckTextEl.innerText = '神引き！超絶上振れ！';
+                luckTextEl.style.color = '#f56565';
+                luckResultSec.style.borderColor = '#f56565';
+                luckScoreEl.style.color = '#f56565';
+            } else if (hensachi >= 60) {
+                luckTextEl.innerText = '上振れ！運がいいですね！';
+                luckTextEl.style.color = '#ed8936';
+                luckResultSec.style.borderColor = '#ed8936';
+                luckScoreEl.style.color = '#ed8936';
+            } else if (hensachi >= 45) {
+                luckTextEl.innerText = '普通（確率通り）です';
+                luckTextEl.style.color = '#48bb78';
+                luckResultSec.style.borderColor = '#48bb78';
+                luckScoreEl.style.color = '#48bb78';
+            } else if (hensachi >= 35) {
+                luckTextEl.innerText = '下振れ...少し運が悪いかも';
+                luckTextEl.style.color = '#4299e1';
+                luckResultSec.style.borderColor = '#4299e1';
+                luckScoreEl.style.color = '#4299e1';
+            } else {
+                luckTextEl.innerText = '大爆死...元気を出して...';
+                luckTextEl.style.color = '#9f7aea';
+                luckResultSec.style.borderColor = '#9f7aea';
+                luckScoreEl.style.color = '#9f7aea';
+            }
+
+            luckResultSec.classList.remove('hidden');
+            setTimeout(() => luckResultSec.classList.add('show'), 10);
+            setTimeout(() => { luckResultSec.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 100);
+        });
     }
 
     // Copy banner

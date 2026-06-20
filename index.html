@@ -21,11 +21,11 @@
     <nav class="side-menu" id="side-menu">
         <div class="menu-header">メニュー</div>
         <ul>
-            <li><a href="#" class="active menu-link">#コンパス 必要BM計算</a></li>
+            <li><a href="#" class="menu-link active" data-view="bm">#コンパス 必要BM計算</a></li>
+            <li><a href="#" class="menu-link" data-view="luck">ガチャ運 偏差値チェッカー</a></li>
             <li><a href="#" id="menu-about">計算の仕組み・注意事項</a></li>
             <li><a href="https://note.com/o_0u0_b/n/nc799cf87802f">#コンパスでお得に課金する方法Note</a></li>
             <li><a href="https://x.com/o_0u0_b">連絡先(X)</a></li>
-            <li><a href="#" class="disabled">履歴・判定（準備中）</a></li>
         </ul>
     </nav>
     <div class="menu-overlay" id="menu-overlay"></div>
@@ -52,53 +52,75 @@
             <div id="current-cards-container" class="card-grid"></div>
         </section>
 
-        <section class="card-inputs">
-            <h3 class="section-title">目標のピックアップ所持枚数</h3>
-            <div class="bulk-actions" data-target="target">
-                <span>一括設定:</span>
-                <button class="bulk-btn" data-val="0">0枚</button>
-                <button class="bulk-btn" data-val="10">10枚</button>
-                <button class="bulk-btn" data-val="20">20枚</button>
-            </div>
-            <div id="target-cards-container" class="card-grid"></div>
-        </section>
+        <!-- BM Calculator View -->
+        <div id="view-bm-calc" class="view-section active">
+            <section class="card-inputs">
+                <h3 class="section-title">目標のピックアップ所持枚数</h3>
+                <div class="bulk-actions" data-target="target">
+                    <span>一括設定:</span>
+                    <button class="bulk-btn" data-val="0">0枚</button>
+                    <button class="bulk-btn" data-val="10">10枚</button>
+                    <button class="bulk-btn" data-val="20">20枚</button>
+                </div>
+                <div id="target-cards-container" class="card-grid"></div>
+            </section>
 
-        <section class="settings-section accordion-section">
-            <button id="advanced-settings-toggle" class="accordion-header">
-                ⚙ 詳細設定 <span class="chevron">▼</span>
-            </button>
-            <div id="advanced-settings-content" class="accordion-content-wrapper">
-                <div class="accordion-inner">
-                    <div class="settings-content">
-                        <div class="setting-item">
-                            <label for="current-tickets">現在所持している選べるURチケット (枚)</label>
-                            <input type="number" id="current-tickets" value="0" min="0" max="999">
-                        </div>
-                        <div class="setting-item">
-                            <label for="total-ur-rate">全体のUR出現確率 (%)</label>
-                            <input type="number" id="total-ur-rate" value="2" step="0.1" min="0">
-                        </div>
-                        <div class="setting-item">
-                            <label for="target-card-multiplier">ピックアップ1種あたりの倍率 (倍)</label>
-                            <input type="number" id="target-card-multiplier" value="24" min="1">
-                        </div>
-                        <div class="setting-item">
-                            <label for="other-card-count">ピックアップ外のUR種類数</label>
-                            <input type="number" id="other-card-count" value="83" min="1">
+            <section class="settings-section accordion-section">
+                <button id="advanced-settings-toggle" class="accordion-header">
+                    ⚙ 詳細設定（ガチャ確率など） <span class="chevron">▼</span>
+                </button>
+                <div id="advanced-settings-content" class="accordion-content-wrapper">
+                    <div class="accordion-inner">
+                        <div class="settings-content">
+                            <div class="setting-item">
+                                <label for="current-tickets">現在所持している選べるURチケット (枚)</label>
+                                <input type="number" id="current-tickets" value="0" min="0" max="999">
+                            </div>
+                            <div class="setting-item">
+                                <label for="total-ur-rate">全体のUR出現確率 (%)</label>
+                                <input type="number" id="total-ur-rate" value="2" step="0.1" min="0">
+                            </div>
+                            <div class="setting-item">
+                                <label for="target-card-multiplier">ピックアップ1種あたりの倍率 (倍)</label>
+                                <input type="number" id="target-card-multiplier" value="24" min="1">
+                            </div>
+                            <div class="setting-item">
+                                <label for="other-card-count">ピックアップ外のUR種類数</label>
+                                <input type="number" id="other-card-count" value="83" min="1">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <button id="calc-btn" class="primary-btn">計算実行</button>
+            <button id="calc-btn" class="primary-btn">いくら必要か予測する！</button>
 
-        <section id="result-section" class="result-section hidden">
-            <h2>目標枚数を揃えるための目安は...</h2>
-            <h1 id="result-bm" style="font-size: 2.5rem; margin: 12px 0; color: var(--primary-color);">--- BM</h1>
-            <div id="result-pulls" class="result-pulls">合計 ---連</div>
-            <p class="result-note">※裏側でシミュレーションを行った「中央値」になります。<br>あくまで確率上の目安となるため、「これくらいあれば安心かな？」という参考程度にしてください。</p>
-        </section>
+            <section id="result-section" class="result-section hidden">
+                <h2>目標枚数を揃えるための目安は...</h2>
+                <h1 id="result-bm" style="font-size: 2.5rem; margin: 12px 0; color: var(--primary-color);">--- BM</h1>
+                <div id="result-pulls" class="result-pulls">合計 ---連</div>
+                <p class="result-note">※裏側でシミュレーションを行った「中央値」になります。<br>あくまで確率上の目安となるため、「これくらいあれば安心かな？」という参考程度にしてください。</p>
+            </section>
+        </div>
+
+        <!-- Luck Checker View -->
+        <div id="view-luck-checker" class="view-section hidden">
+            <section class="settings-content" style="margin-bottom: 24px; border-color: #3b82f6;">
+                <div class="setting-item" style="margin-top: 0;">
+                    <label for="luck-pulls-input">これまで回したガチャの合計回数</label>
+                    <input type="number" id="luck-pulls-input" value="0" min="0" placeholder="例: 120">
+                </div>
+            </section>
+
+            <button id="luck-calc-btn" class="primary-btn" style="border-bottom-color: #3b82f6; background: #2d3748;">ガチャ運を判定する！</button>
+
+            <section id="luck-result-section" class="result-section hidden" style="border-color: #3b82f6;">
+                <h2>あなたのガチャ運偏差値は...</h2>
+                <h1 id="luck-result-score" style="font-size: 3rem; margin: 12px 0;">--.-</h1>
+                <div id="luck-result-text" class="result-pulls" style="font-size: 1.2rem; font-weight: bold; color: #fff;">判定中...</div>
+                <p class="result-note" style="border-left-color: #3b82f6;">※設定されたガチャ確率に対して、純粋な引きの強さを偏差値化しています。<br>※チケットで交換した分は含めず、純粋にガチャから出た枚数を現在の所持枚数として入力してください。</p>
+            </section>
+        </div>
     </main>
 
     <!-- Color Modal -->

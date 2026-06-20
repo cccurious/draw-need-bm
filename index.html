@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DrawNeed BM</title>
+    <title>コンパス ガチャ必要BM予測ツール</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
         <div class="menu-header">メニュー</div>
         <ul>
             <li><a href="#" class="active">ダッシュボード</a></li>
-            <li><a href="#" id="formula-menu-btn">計算の仕組みについて</a></li>
+            <li><a href="#" id="menu-about">計算の仕組み・注意事項</a></li>
             <li><a href="#" class="disabled">履歴・判定（準備中）</a></li>
         </ul>
     </nav>
@@ -41,71 +41,59 @@
         </section>
 
         <section class="card-inputs">
-            <h3 class="section-title">目的のピックアップ所持枚数</h3>
+            <h3 class="section-title">目標のピックアップ所持枚数</h3>
             <div id="target-cards-container" class="card-grid"></div>
         </section>
 
         <section class="settings-section">
             <details class="advanced-settings">
-                <summary>⚙️ 詳細設定</summary>
+                <summary>⚙ 詳細設定（ガチャ確率など）</summary>
                 <div class="settings-content">
                     <div class="setting-item">
-                        <label>目標確率: <span id="prob-val">50</span>%</label>
-                        <input type="range" id="probability-slider" min="1" max="99" value="50">
-                    </div>
-                    <div class="setting-item">
-                        <label>現在所持している選べるURチケット</label>
+                        <label>手持ちの選べるURチケット</label>
                         <input type="number" id="current-tickets" value="0" min="0">
                     </div>
 
                     <div class="setting-item">
-                        <label>ピックアップカードの倍率</label>
+                        <label>ピックアップ倍率</label>
                         <input type="number" id="target-card-multiplier" value="24" min="1">
                     </div>
                     <div class="setting-item">
-                        <label>ピックアップ外の枚数</label>
+                        <label>ピックアップ外のUR枚数</label>
                         <input type="number" id="other-card-count" value="83" min="0">
                     </div>
                     <div class="setting-item">
-                        <label>全体UR確率 (%)</label>
+                        <label>UR出現確率 (%)</label>
                         <input type="number" id="total-ur-rate" value="2" min="0.1" step="0.1">
                     </div>
                 </div>
             </details>
         </section>
 
-        <button id="calculate-btn" class="primary-btn">必要BMを計算する</button>
+        <button id="calc-btn" class="primary-btn">いくら必要か予測する！</button>
 
         <section id="result-section" class="result-section hidden">
-            <h2 id="result-title"></h2>
-            <div class="result-card">
-                <div class="result-pulls" style="margin-top:16px;">（約 <span id="result-pulls">0</span> 連）</div>
-            </div>
-            <p class="result-note">※チケットによる天井交換（10枚で1枚確定）を含み、最も効率よくチケットを消費した際の結果です。</p>
+            <h2>目標枚数を揃えるための目安は...</h2>
+            <h1 id="result-bm" style="font-size: 2.5rem; margin: 12px 0; color: var(--primary-color);">--- BM</h1>
+            <div id="result-pulls" class="result-pulls">合計 ---連 (選べるURチケット ---枚GET)</div>
+            <p class="result-note">※裏側で2000回ガチャを回したシミュレーションの「中央値」です！<br>あくまで確率上の目安なので、うのみにせず「これくらいあれば安心かな？」という参考程度に楽しんでくださいね！</p>
         </section>
     </main>
 
     <!-- Formula Modal -->
     <div class="modal" id="formula-modal">
         <div class="modal-content">
-            <h3>計算の仕組みについて</h3>
+            <h3 id="modal-title">計算の仕組みと注意事項</h3>
+            <p>このツールは、指定した目標に到達するまでに必要なBMを、プログラムで実際にガチャを引く「シミュレーション」を行って予測しています。</p>
             
-            <p class="formula-label"><strong>1. ガチャのシミュレーション</strong></p>
-            <p>
-                ガチャは毎回運が絡むため、「必ず〇連で当たる」とは言い切れません。<br>
-                そこでこのアプリでは、<strong>「実際にガチャを引く」という仮想テストをアプリの裏側で2,000回実施</strong>し、その結果から「この連数（BM）まで引けば、〇〇%の人は目標を達成できている」という安心ラインを算出しています。
-            </p>
-            
-            <p class="formula-label"><strong>2. 賢い天井（選べるURチケット）の考慮</strong></p>
-            <p>
-                ガチャ40連ごとに獲得できる「選べるURチケット」の存在も計算に含めています。<br>
-                シミュレーションでは、ただ闇雲に引き続けるのではなく、<strong>「各カードの目標まで足りない枚数」が「持っているチケットで交換できる枚数」以下になった瞬間にガチャをストップ</strong>し、最も効率よくチケットを消費する実戦的な動きを完全に再現しています。
-            </p>
+            <div class="formula-label">1. ガチャの仕様を完全再現</div>
+            <p>設定された「UR出現確率」や「ピックアップ倍率」を使ってガチャを回し、40連ごとに貰える「選べるURチケット」での交換もしっかり計算に入れています。</p>
 
-            <p class="formula-label"><strong>3. 計算結果がブレない理由</strong></p>
-            <p>
-                計算のブレをなくし、常に一定の正確な指標を提供するため、特殊な「シード固定乱数」を使用しています。設定条件が同じであれば、何度計算ボタンを押しても結果が変わることはありません。
-            </p>
+            <div class="formula-label">2. 2000回のテストで平均（目安）を算出</div>
+            <p>「たまたま神引きした」「沼った」というブレをなくすため、裏側で<strong>2000回</strong>もシミュレーションを行い、最も多く落ち着いた数値（中央値）を表示しています。</p>
+
+            <div class="formula-label" style="color: #e53e3e; border-left-color: #e53e3e;">⚠️ あくまで参考程度に！</div>
+            <p>ガチャは確率なので、表示されたBMを用意すれば100%揃うというわけではありません。結果をうのみにせず、「これくらいあれば確率的には揃いそうだな〜」という<strong>参考程度に楽しんでくださいね！</strong></p>
 
             <button class="close-modal-btn" id="close-modal-btn">閉じる</button>
         </div>

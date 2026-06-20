@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     menuOverlay.addEventListener('click', toggleMenu);
 
     // Modal
-    const formulaBtn = document.getElementById('formula-menu-btn');
+    const formulaBtn = document.getElementById('menu-about');
     const formulaModal = document.getElementById('formula-modal');
     const closeModal = document.getElementById('close-modal-btn');
 
@@ -128,15 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formulaModal.classList.remove('show');
     });
 
-    // Slider
-    const probSlider = document.getElementById('probability-slider');
-    const probVal = document.getElementById('prob-val');
-    probSlider.addEventListener('input', (e) => {
-        probVal.textContent = e.target.value;
-    });
-
     // Calculation Logic
-    const calcBtn = document.getElementById('calculate-btn');
+    const calcBtn = document.getElementById('calc-btn');
     const resultSec = document.getElementById('result-section');
     const supportBanner = document.getElementById('support-banner');
 
@@ -151,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     calcBtn.addEventListener('click', () => {
-        const probPercent = parseInt(probSlider.value);
+        const probPercent = 50; // Central value logic
         const initialTickets = parseInt(document.getElementById('current-tickets').value) || 0;
         const multiplier = parseFloat(document.getElementById('target-card-multiplier').value);
         const otherCards = parseFloat(document.getElementById('other-card-count').value);
@@ -163,11 +156,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let totalNeeds = needs.reduce((a, b) => a + b, 0);
 
         if (totalNeeds === 0) {
-            showResult(0, 0, probPercent);
+            showResult(0, 0, 0);
             return;
         }
 
         const pulls = simulatePulls(pSpecific, numCards, needs, initialTickets, probPercent);
+        const earnedTickets = Math.floor(pulls / 40);
         
         let batches = Math.floor(pulls / 60);
         let singles = pulls % 60;
@@ -175,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (singlesCost >= 5000) { singlesCost = 5000; }
         const totalBM = batches * 5000 + singlesCost;
 
-        showResult(totalBM, pulls, probPercent);
+        showResult(totalBM, pulls, earnedTickets);
     });
 
     function simulatePulls(P_target, typesCount, needs, initialTickets, probPercent) {
@@ -219,9 +213,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return results[idx];
     }
 
-    function showResult(bm, pulls, probPercent) {
-        document.getElementById('result-title').innerHTML = `<span style="color:#f97316; font-size:1.8rem; font-weight:bold;">${bm.toLocaleString()} BM</span><br>あれば${probPercent}%の確率で揃います`;
-        document.getElementById('result-pulls').textContent = pulls.toLocaleString();
+    function showResult(bm, pulls, earnedTickets) {
+        document.getElementById('result-bm').innerText = `${bm.toLocaleString()} BM`;
+        document.getElementById('result-pulls').innerText = `合計 ${pulls.toLocaleString()}連 (選べるURチケット ${earnedTickets.toLocaleString()}枚GET!)`;
         
         resultSec.classList.remove('hidden');
         setTimeout(() => resultSec.classList.add('show'), 10);

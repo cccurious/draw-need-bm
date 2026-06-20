@@ -169,6 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     targetView.insertBefore(settingsSec, primaryBtn);
                 }
             }
+            
+            // Hide support banner when switching views
+            const supportBanner = document.getElementById('support-banner');
+            if (supportBanner) {
+                supportBanner.classList.remove('show');
+            }
 
             // Update Header
             if (viewId === 'bm') {
@@ -446,6 +452,11 @@ document.addEventListener('DOMContentLoaded', () => {
             luckResultSec.classList.remove('hidden');
             setTimeout(() => luckResultSec.classList.add('show'), 10);
             setTimeout(() => { luckResultSec.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 100);
+
+            const supportBanner = document.getElementById('support-banner');
+            if (supportBanner && !supportBanner.classList.contains('show')) {
+                supportBanner.classList.add('show');
+            }
         });
     }
 

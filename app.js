@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cardColors = ['assets/card_red.png', 'assets/card_blue.png', 'assets/card_green.png', 'assets/card_gray.png'];
+    // We add a 5th color (Red again)
+    const cardColors = [
+        'assets/card_red.png', 
+        'assets/card_blue.png', 
+        'assets/card_green.png', 
+        'assets/card_gray.png',
+        'assets/card_red.png' // 5th card
+    ];
     
     const currContainer = document.getElementById('current-cards-container');
     const targetContainer = document.getElementById('target-cards-container');
@@ -120,6 +127,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultSec = document.getElementById('result-section');
     const supportBanner = document.getElementById('support-banner');
 
+    // Seeded Random Generator (Mulberry32)
+    function mulberry32(a) {
+        return function() {
+          var t = a += 0x6D2B79F5;
+          t = Math.imul(t ^ t >>> 15, t | 1);
+          t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        }
+    }
+
     calcBtn.addEventListener('click', () => {
         const probPercent = parseInt(probSlider.value);
         const initialTickets = parseInt(document.getElementById('current-tickets').value) || 0;
@@ -149,8 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function simulatePulls(P_target, typesCount, needs, initialTickets, probPercent) {
-        const runs = 10000;
+        // Reduced to 2000 runs thanks to fixed seed, making it lightning fast
+        const runs = 2000; 
         let results = new Int32Array(runs);
+        
+        // Fixed seed so the random sequence is EXACTLY the same for every click
+        const prng = mulberry32(1234567);
         
         for(let i = 0; i < runs; i++) {
             let pulls = 0;
@@ -167,8 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 pulls++;
                 
-                if (Math.random() < (P_target * typesCount)) {
-                    let typeIdx = Math.floor(Math.random() * typesCount);
+                if (prng() < (P_target * typesCount)) {
+                    let typeIdx = Math.floor(prng() * typesCount);
                     if (currentNeeds[typeIdx] > 0) {
                         currentNeeds[typeIdx]--;
                     }

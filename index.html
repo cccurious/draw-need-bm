@@ -19,7 +19,7 @@
         <div class="menu-header">メニュー</div>
         <ul>
             <li><a href="#" class="active">ダッシュボード</a></li>
-            <li><a href="#" id="formula-menu-btn">計算式を確認する</a></li>
+            <li><a href="#" id="formula-menu-btn">計算の仕組みについて</a></li>
             <li><a href="#" class="disabled">履歴・判定（準備中）</a></li>
         </ul>
     </nav>
@@ -86,22 +86,24 @@
     <!-- Formula Modal -->
     <div class="modal" id="formula-modal">
         <div class="modal-content">
-            <h3>計算アルゴリズムの詳細</h3>
+            <h3>計算の仕組みについて</h3>
             
-            <p class="formula-label"><strong>1. 1回のガチャでの個別排出確率:</strong></p>
-            <div class="formula">
-                P = (1 × ピックアップ倍率) / <br>
-                ((PU種類数 × PU倍率) + PU外枚数) <br>
-                × 全体UR確率(%)
-            </div>
+            <p class="formula-label"><strong>1. ガチャのシミュレーション</strong></p>
+            <p>
+                ガチャは毎回運が絡むため、「必ず〇連で当たる」とは言い切れません。<br>
+                そこでこのアプリでは、<strong>「実際にガチャを引く」という仮想テストをアプリの裏側で2,000回実施</strong>し、その結果から「この連数（BM）まで引けば、〇〇%の人は目標を達成できている」という安心ラインを算出しています。
+            </p>
             
-            <p class="formula-label"><strong>2. モンテカルロ法によるシミュレーション:</strong></p>
-            <ul class="formula-list">
-                <li>ガチャを1回引き、乱数を用いて各ピックアップカードが排出されたかを個別に判定します。</li>
-                <li>ガチャ40連ごとに「選べるURチケット」を1枚獲得します。</li>
-                <li><strong>コンプリート判定:</strong> 「各ピックアップカードの目標までの不足枚数の合計」が「現在交換可能な枚数（所持チケット÷10）」以下になった時点で、その回のシミュレーションを終了し、かかった連数を記録します。</li>
-                <li>これを<strong>10,000回</strong>繰り返し、指定した確率（例：50%）に応じた分位数（指定確率の人がその連数以内で揃うライン）を算出しています。</li>
-            </ul>
+            <p class="formula-label"><strong>2. 賢い天井（選べるURチケット）の考慮</strong></p>
+            <p>
+                ガチャ40連ごとに獲得できる「選べるURチケット」の存在も計算に含めています。<br>
+                シミュレーションでは、ただ闇雲に引き続けるのではなく、<strong>「各カードの目標まで足りない枚数」が「持っているチケットで交換できる枚数」以下になった瞬間にガチャをストップ</strong>し、最も効率よくチケットを消費する実戦的な動きを完全に再現しています。
+            </p>
+
+            <p class="formula-label"><strong>3. 計算結果がブレない理由</strong></p>
+            <p>
+                計算のブレをなくし、常に一定の正確な指標を提供するため、特殊な「シード固定乱数」を使用しています。設定条件が同じであれば、何度計算ボタンを押しても結果が変わることはありません。
+            </p>
 
             <button class="close-modal-btn" id="close-modal-btn">閉じる</button>
         </div>

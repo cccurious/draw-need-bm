@@ -19,59 +19,42 @@
         <div class="menu-header">メニュー</div>
         <ul>
             <li><a href="#" class="active">ダッシュボード</a></li>
+            <li><a href="#" id="formula-menu-btn">計算式を確認する</a></li>
             <li><a href="#" class="disabled">履歴・判定（準備中）</a></li>
-            <li><a href="#" class="disabled">設定（準備中）</a></li>
         </ul>
     </nav>
     <div class="menu-overlay" id="menu-overlay"></div>
 
     <main class="main-content">
-        <section class="card-section">
-            <div class="card-display" id="card-display">
-                <!-- Cards injected via JS -->
-            </div>
+        <section class="card-inputs">
+            <h3>現在の目玉所持枚数</h3>
+            <div id="current-cards-container" class="card-list"></div>
         </section>
 
-        <section class="input-section">
-            <div class="stepper-group">
-                <label>現在の目玉所持枚数</label>
-                <div class="stepper">
-                    <button class="stepper-btn" id="curr-minus">-</button>
-                    <input type="number" id="current-cards" value="0" min="0" readonly>
-                    <button class="stepper-btn" id="curr-plus">+</button>
-                </div>
-            </div>
-
-            <div class="stepper-group">
-                <label>目的の目玉所持枚数</label>
-                <div class="stepper">
-                    <button class="stepper-btn" id="target-minus">-</button>
-                    <input type="number" id="target-cards" value="1" min="1" readonly>
-                    <button class="stepper-btn" id="target-plus">+</button>
-                </div>
-            </div>
+        <section class="card-inputs">
+            <h3>目的の目玉所持枚数</h3>
+            <div id="target-cards-container" class="card-list"></div>
         </section>
 
         <section class="settings-section">
             <details class="advanced-settings">
-                <summary>詳細設定</summary>
+                <summary>⚙️ 詳細設定</summary>
                 <div class="settings-content">
                     <div class="setting-item">
                         <label>目標確率: <span id="prob-val">50</span>%</label>
                         <input type="range" id="probability-slider" min="1" max="99" value="50">
-                        <small>※指定した確率で揃うための必要BMを計算します</small>
+                    </div>
+                    <div class="setting-item">
+                        <label>現在所持している選べるURチケット</label>
+                        <input type="number" id="current-tickets" value="0" min="0">
                     </div>
 
                     <div class="template-buttons">
                         <button class="tmpl-btn" data-type="2">2種ピック</button>
-                        <button class="tmpl-btn" data-type="3">3種ピック</button>
+                        <button class="tmpl-btn active" data-type="3">3種ピック</button>
                         <button class="tmpl-btn" data-type="4">4種ピック</button>
                     </div>
 
-                    <div class="setting-item">
-                        <label>目玉カードの枚数</label>
-                        <input type="number" id="target-card-count" value="2" min="1">
-                    </div>
                     <div class="setting-item">
                         <label>目玉カードの倍率</label>
                         <input type="number" id="target-card-multiplier" value="15" min="1">
@@ -93,12 +76,28 @@
         <section id="result-section" class="result-section hidden">
             <h2 id="result-title"></h2>
             <div class="result-card">
-                <div class="result-bm"><span id="result-bm">0</span> BM</div>
-                <div class="result-pulls">（約 <span id="result-pulls">0</span> 連）</div>
+                <div class="result-pulls" style="margin-top:16px;">（約 <span id="result-pulls">0</span> 連）</div>
             </div>
-            <p class="result-note">※天井（400連で1枚確定）を含んだシミュレーション結果です。</p>
+            <p class="result-note">※チケットによる天井交換（10枚で1枚確定）を含み、最も効率よくチケットを消費した際の結果です。</p>
         </section>
     </main>
+
+    <!-- Formula Modal -->
+    <div class="modal" id="formula-modal">
+        <div class="modal-content">
+            <h3>計算式について</h3>
+            <p><strong>特定の目玉カード1枚を引く確率:</strong></p>
+            <div class="formula">
+                (1 × 目玉倍率) / <br>
+                ((目玉種類数 × 目玉倍率) + 目玉外枚数) <br>
+                × 全体UR確率(%)
+            </div>
+            <p><strong>天井仕様の考慮:</strong></p>
+            <p>ガチャ40連ごとに「選べるURチケット」を1枚獲得します。10枚集めると任意の目玉カードと交換できます。</p>
+            <p>シミュレーションでは、<strong>各カードの不足枚数の合計が、現在交換可能な枚数（所持チケット÷10）以下になった時点</strong>をゴールとして計算しています。</p>
+            <button class="close-modal-btn" id="close-modal-btn">閉じる</button>
+        </div>
+    </div>
 
     <div class="support-banner" id="support-banner">
         <img src="assets/banner.png" alt="" class="banner-bg">

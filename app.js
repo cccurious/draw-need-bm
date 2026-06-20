@@ -85,6 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const type = parseInt(e.target.dataset.type);
             numCards = type;
             initCardState(numCards);
+
+            // Update multipliers based on selection
+            const multiplierInput = document.getElementById('target-card-multiplier');
+            const otherCardInput = document.getElementById('other-card-count');
+            
+            otherCardInput.value = 83; // 常に一律83枚
+            
+            switch(type) {
+                case 2: multiplierInput.value = 28; break;
+                case 3: multiplierInput.value = 24; break;
+                case 4: multiplierInput.value = 21; break;
+                case 5: multiplierInput.value = 21; break;
+            }
         });
     });
 

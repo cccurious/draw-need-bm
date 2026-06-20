@@ -127,14 +127,9 @@ body {
 }
 .stepper-btn:active:not(:disabled) { background: #4a5568; }
 .stepper-btn:disabled { background: #e2e8f0; color: #a0aec0; cursor: not-allowed; }
-.stepper input {
-    width: 32px; padding: 0; text-align: center; border: none; font-size: 1.1rem; font-weight: bold;
-    background: transparent; color: var(--text-color); -moz-appearance: textfield;
-}
-.stepper input::-webkit-outer-spin-button,
-.stepper input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.stepper-value {
+    width: 36px; text-align: center; font-size: 1.1rem; font-weight: bold;
+    color: var(--text-color); display: flex; justify-content: center; align-items: center;
 }
 
 /* Subdued Settings */

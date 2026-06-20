@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'assets/card_red.png', 
         'assets/card_blue.png', 
         'assets/card_green.png', 
-        'assets/card_gray.png',
-        'assets/card_red.png' // 5th card
+        'assets/card_gray.png'
     ];
     
     const currContainer = document.getElementById('current-cards-container');
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initCardState(count) {
         cardState = [];
         for(let i=0; i<count; i++) {
-            cardState.push({ current: 0, target: 20 });
+            cardState.push({ current: 0, target: 20, colorIdx: i % 4 });
         }
         renderCards();
     }
@@ -28,13 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
         targetContainer.innerHTML = '';
 
         cardState.forEach((state, i) => {
-            const colorSrc = cardColors[i % cardColors.length];
+            const colorSrc = cardColors[state.colorIdx];
             
             // Current Item
             const currItem = document.createElement('div');
             currItem.className = 'card-item';
             currItem.innerHTML = `
-                <img src="${colorSrc}" alt="Card">
+                <img src="${colorSrc}" alt="Card" class="card-img" data-idx="${i}">
                 <div class="stepper">
                     <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="-1" ${state.current <= 0 ? 'disabled' : ''}>-</button>
                     <div class="stepper-value">${state.current}</div>
@@ -47,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetItem = document.createElement('div');
             targetItem.className = 'card-item';
             targetItem.innerHTML = `
-                <img src="${colorSrc}" alt="Card">
+                <img src="${colorSrc}" alt="Card" class="card-img" data-idx="${i}">
                 <div class="stepper">
                     <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="-1" ${state.target <= 0 ? 'disabled' : ''}>-</button>
                     <div class="stepper-value">${state.target}</div>
@@ -55,6 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             targetContainer.appendChild(targetItem);
+        });
+
+        // Attach events
+        document.querySelectorAll('.card-img').forEach(img => {
+            img.addEventListener('click', (e) => {
+                const idx = parseInt(e.target.dataset.idx);
+                openColorPicker(idx);
+            });
         });
 
         // Attach events
@@ -155,6 +162,43 @@ document.addEventListener('DOMContentLoaded', () => {
     formulaModal.addEventListener('click', (e) => {
         if (e.target === formulaModal) {
             formulaModal.classList.remove('show');
+        }
+    });
+
+    // Color Modal Logic
+    let pickingIdx = -1;
+    const colorModal = document.getElementById('color-modal');
+    
+    function openColorPicker(idx) {
+        pickingIdx = idx;
+        const currentColor = cardState[idx].colorIdx;
+        document.querySelectorAll('.color-option').forEach(opt => {
+            if (parseInt(opt.dataset.color) === currentColor) {
+                opt.classList.add('selected');
+            } else {
+                opt.classList.remove('selected');
+            }
+        });
+        colorModal.classList.add('show');
+    }
+
+    document.querySelectorAll('.color-option').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+            if (pickingIdx >= 0) {
+                cardState[pickingIdx].colorIdx = parseInt(e.target.dataset.color);
+                renderCards(); // This updates both current and target containers
+                colorModal.classList.remove('show');
+            }
+        });
+    });
+
+    document.getElementById('close-color-modal').addEventListener('click', () => {
+        colorModal.classList.remove('show');
+    });
+    
+    colorModal.addEventListener('click', (e) => {
+        if (e.target === colorModal) {
+            colorModal.classList.remove('show');
         }
     });
 

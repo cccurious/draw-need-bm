@@ -7,94 +7,92 @@ document.addEventListener('DOMContentLoaded', () => {
         'assets/card_gray.png'
     ];
     
-    const currContainer = document.getElementById('current-cards-container');
-    const targetContainer = document.getElementById('target-cards-container');
-    
     // Config state
     let numCards = 3;
-    let cardState = []; // [{current: 0, target: 20}, ...]
+    let stateBm = []; // [{current: 0, target: 20, colorIdx: 0}, ...]
+    let stateLuck = []; // [{current: 0, colorIdx: 0}, ...]
 
     function initCardState(count) {
-        cardState = [];
+        stateBm = [];
+        stateLuck = [];
         for(let i=0; i<count; i++) {
-            cardState.push({ current: 0, target: 20, colorIdx: i % 4 });
+            stateBm.push({ current: 0, target: 20, colorIdx: i % 4 });
+            stateLuck.push({ current: 0, colorIdx: i % 4 });
         }
-        renderCards();
+        renderAllGrids();
     }
 
-    function renderCards() {
-        currContainer.innerHTML = '';
-        targetContainer.innerHTML = '';
+    function renderGrid(containerId, stateArray, type) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = '';
 
-        cardState.forEach((state, i) => {
+        stateArray.forEach((state, i) => {
             const colorSrc = cardColors[state.colorIdx];
+            const item = document.createElement('div');
+            item.className = 'card-item';
             
-            // Current Item
-            const currItem = document.createElement('div');
-            currItem.className = 'card-item';
-            currItem.innerHTML = `
-                <img src="${colorSrc}" alt="Card" class="card-img" data-idx="${i}">
+            let val = type === 'target' ? state.target : state.current;
+            
+            item.innerHTML = `
+                <img src="${colorSrc}" alt="Card" class="card-img" data-idx="${i}" data-view="${containerId}">
                 <div class="stepper">
-                    <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="-1" ${state.current <= 0 ? 'disabled' : ''}>-</button>
-                    <div class="stepper-value">${state.current}</div>
-                    <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="1" ${state.current >= 20 ? 'disabled' : ''}>+</button>
+                    <button class="stepper-btn" data-idx="${i}" data-type="${type}" data-view="${containerId}" data-val="-1" ${val <= 0 ? 'disabled' : ''}>-</button>
+                    <div class="stepper-value">${val}</div>
+                    <button class="stepper-btn" data-idx="${i}" data-type="${type}" data-view="${containerId}" data-val="1" ${val >= 20 ? 'disabled' : ''}>+</button>
                 </div>
             `;
-            currContainer.appendChild(currItem);
-
-            // Target Item
-            const targetItem = document.createElement('div');
-            targetItem.className = 'card-item';
-            targetItem.innerHTML = `
-                <img src="${colorSrc}" alt="Card" class="card-img" data-idx="${i}">
-                <div class="stepper">
-                    <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="-1" ${state.target <= 0 ? 'disabled' : ''}>-</button>
-                    <div class="stepper-value">${state.target}</div>
-                    <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="1" ${state.target >= 20 ? 'disabled' : ''}>+</button>
-                </div>
-            `;
-            targetContainer.appendChild(targetItem);
-        });
-
-        // Attach events
-        document.querySelectorAll('.card-img').forEach(img => {
-            img.addEventListener('click', (e) => {
-                const idx = parseInt(e.target.dataset.idx);
-                openColorPicker(idx);
-            });
-        });
-
-        // Attach events
-        document.querySelectorAll('.stepper-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.dataset.idx);
-                const type = btn.dataset.type;
-                const val = parseInt(btn.dataset.val);
-                
-                if (type === 'curr') {
-                    cardState[idx].current = Math.max(0, Math.min(20, cardState[idx].current + val));
-                } else {
-                    cardState[idx].target = Math.max(0, Math.min(20, cardState[idx].target + val));
-                }
-                renderCards();
-            });
+            container.appendChild(item);
         });
     }
+
+    function renderAllGrids() {
+        renderGrid('current-cards-bm', stateBm, 'current');
+        renderGrid('target-cards-bm', stateBm, 'target');
+        renderGrid('current-cards-luck', stateLuck, 'current');
+    }
+
+    // Global Event Delegation for Cards
+    document.addEventListener('click', (e) => {
+        // Stepper buttons
+        if (e.target.classList.contains('stepper-btn')) {
+            const idx = parseInt(e.target.dataset.idx);
+            const type = e.target.dataset.type; // 'current' or 'target'
+            const viewId = e.target.dataset.view; // 'current-cards-bm' etc.
+            const val = parseInt(e.target.dataset.val);
+            
+            let targetState = viewId === 'current-cards-luck' ? stateLuck[idx] : stateBm[idx];
+
+            if (type === 'current') {
+                targetState.current = Math.max(0, Math.min(20, targetState.current + val));
+            } else {
+                targetState.target = Math.max(0, Math.min(20, targetState.target + val));
+            }
+            renderAllGrids();
+        }
+
+        // Card Image Color Picker
+        if (e.target.classList.contains('card-img')) {
+            const idx = parseInt(e.target.dataset.idx);
+            const viewId = e.target.dataset.view;
+            openColorPicker(idx, viewId);
+        }
+    });
 
     // Bulk Actions
     document.querySelectorAll('.bulk-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const targetType = e.target.closest('.bulk-actions').dataset.target;
+            const targetType = e.target.closest('.bulk-actions').dataset.target; // 'bm-current', 'bm-target', 'luck-current'
             const val = parseInt(e.target.dataset.val);
             
-            cardState.forEach(state => {
-                if (targetType === 'current') {
-                    state.current = val;
-                } else {
-                    state.target = val;
-                }
-            });
-            renderCards();
+            if (targetType === 'bm-current') {
+                stateBm.forEach(s => s.current = val);
+            } else if (targetType === 'bm-target') {
+                stateBm.forEach(s => s.target = val);
+            } else if (targetType === 'luck-current') {
+                stateLuck.forEach(s => s.current = val);
+            }
+            renderAllGrids();
         });
     });
 
@@ -212,11 +210,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Color Modal Logic
     let pickingIdx = -1;
+    let pickingView = null;
     const colorModal = document.getElementById('color-modal');
     
-    function openColorPicker(idx) {
+    function openColorPicker(idx, viewId) {
         pickingIdx = idx;
-        const currentColor = cardState[idx].colorIdx;
+        pickingView = viewId;
+        const currentState = viewId === 'current-cards-luck' ? stateLuck[idx] : stateBm[idx];
+        const currentColor = currentState.colorIdx;
+        
         document.querySelectorAll('.color-option').forEach(opt => {
             if (parseInt(opt.dataset.color) === currentColor) {
                 opt.classList.add('selected');
@@ -229,9 +231,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.color-option').forEach(opt => {
         opt.addEventListener('click', (e) => {
-            if (pickingIdx >= 0) {
-                cardState[pickingIdx].colorIdx = parseInt(e.target.dataset.color);
-                renderCards(); // This updates both current and target containers
+            if (pickingIdx >= 0 && pickingView) {
+                const colorIdx = parseInt(e.target.dataset.color);
+                if (pickingView === 'current-cards-luck') {
+                    stateLuck[pickingIdx].colorIdx = colorIdx;
+                } else {
+                    stateBm[pickingIdx].colorIdx = colorIdx;
+                }
+                renderAllGrids();
                 colorModal.classList.remove('show');
             }
         });
@@ -271,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const pSpecific = (1 * multiplier) / ((numCards * multiplier) + otherCards) * urRate;
 
-        let needs = cardState.map(s => Math.max(0, s.target - s.current));
+        let needs = stateBm.map(s => Math.max(0, s.target - s.current));
         let totalNeeds = needs.reduce((a, b) => a + b, 0);
 
         if (totalNeeds === 0) {
@@ -385,8 +392,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const pSpecific = (1 * multiplier) / ((numCards * multiplier) + otherCards) * urRate;
             const P_any_target = pSpecific * numCards;
 
-            // A案: Users input purely what they pulled (Do not subtract tickets automatically)
-            let pureGachaHits = cardState.reduce((sum, state) => sum + state.current, 0);
+            // B案: 獲得チケット枚数を計算し、10枚につき1枚のカードと交換したとみなして純粋な引きを算出する
+            // 40回で1チケット
+            const earnedTickets = Math.floor(pulls / 40);
+            // 10チケットで1枚交換
+            const exchangedCards = Math.floor(earnedTickets / 10);
+            
+            let totalCurrent = stateLuck.reduce((sum, state) => sum + state.current, 0);
+            let pureGachaHits = Math.max(0, totalCurrent - exchangedCards);
 
             const expected = pulls * P_any_target;
             const variance = pulls * P_any_target * (1 - P_any_target);

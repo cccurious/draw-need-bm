@@ -60,9 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Attach events
         document.querySelectorAll('.stepper-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const idx = parseInt(e.target.dataset.idx);
-                const type = e.target.dataset.type;
-                const val = parseInt(e.target.dataset.val);
+                const idx = parseInt(btn.dataset.idx);
+                const type = btn.dataset.type;
+                const val = parseInt(btn.dataset.val);
                 
                 if (type === 'curr') {
                     cardState[idx].current = Math.max(0, Math.min(20, cardState[idx].current + val));

@@ -461,9 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Copy banner
+    // Support Banner Logic
     const copyBtn = document.getElementById('copy-btn');
-    const toast = document.getElementById('copy-toast');
+    const toast = document.getElementById('toast');
 
     function triggerSupportBanner() {
         const supportBanner = document.getElementById('support-banner');
@@ -492,7 +492,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 toast.classList.remove('show');
                 setTimeout(() => toast.classList.add('hidden'), 300);
             }, 2000);
-            supportBanner.classList.remove('show');
+            const supportBanner = document.getElementById('support-banner');
+            if (supportBanner) {
+                supportBanner.classList.remove('show');
+            }
         });
     });
 });

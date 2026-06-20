@@ -99,9 +99,22 @@ body {
 }
 .section-title { 
     font-size: 1rem; color: var(--white); background: var(--dark-border); 
-    padding: 8px 12px; border-radius: 6px; margin-bottom: 20px;
+    padding: 8px 12px; border-radius: 6px; margin-bottom: 16px;
     text-align: center; border-bottom: 2px solid var(--primary-color);
 }
+
+/* Bulk Actions */
+.bulk-actions {
+    display: flex; justify-content: flex-end; align-items: center; gap: 8px;
+    margin-bottom: 16px; font-size: 0.8rem; color: var(--subdued-text);
+}
+.bulk-actions span { font-weight: bold; }
+.bulk-btn {
+    padding: 6px 12px; background: #edf2f7; border: 1px solid var(--border-color);
+    border-radius: 16px; font-size: 0.8rem; font-weight: bold; color: var(--text-color);
+    cursor: pointer; transition: all 0.2s; outline: none; box-shadow: 1px 1px 0px rgba(0,0,0,0.05);
+}
+.bulk-btn:active { background: #e2e8f0; transform: translateY(1px); box-shadow: none; }
 
 .card-grid {
     display: flex; flex-wrap: wrap; justify-content: center; gap: 20px 8px;

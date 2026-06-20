@@ -74,6 +74,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Bulk Actions
+    document.querySelectorAll('.bulk-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const targetType = e.target.closest('.bulk-actions').dataset.target;
+            const val = parseInt(e.target.dataset.val);
+            
+            cardState.forEach(state => {
+                if (targetType === 'current') {
+                    state.current = val;
+                } else {
+                    state.target = val;
+                }
+            });
+            renderCards();
+        });
+    });
+
     // Initialize with 3 cards
     initCardState(numCards);
 

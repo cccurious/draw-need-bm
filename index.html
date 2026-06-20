@@ -41,17 +41,29 @@
 
         <section class="card-inputs">
             <h3 class="section-title">現在のピックアップ所持枚数</h3>
+            <div class="bulk-actions" data-target="current">
+                <span>一括設定:</span>
+                <button class="bulk-btn" data-val="0">0枚</button>
+                <button class="bulk-btn" data-val="10">10枚</button>
+                <button class="bulk-btn" data-val="20">20枚</button>
+            </div>
             <div id="current-cards-container" class="card-grid"></div>
         </section>
 
         <section class="card-inputs">
             <h3 class="section-title">目標のピックアップ所持枚数</h3>
+            <div class="bulk-actions" data-target="target">
+                <span>一括設定:</span>
+                <button class="bulk-btn" data-val="0">0枚</button>
+                <button class="bulk-btn" data-val="10">10枚</button>
+                <button class="bulk-btn" data-val="20">20枚</button>
+            </div>
             <div id="target-cards-container" class="card-grid"></div>
         </section>
 
         <section class="settings-section accordion-section">
             <button id="advanced-settings-toggle" class="accordion-header">
-                ⚙ 詳細設定（ガチャ確率など） <span class="chevron">▼</span>
+                ⚙ 詳細設定 <span class="chevron">▼</span>
             </button>
             <div id="advanced-settings-content" class="accordion-content-wrapper">
                 <div class="accordion-inner">
@@ -62,7 +74,7 @@
                         </div>
                         <div class="setting-item">
                             <label for="total-ur-rate">全体のUR出現確率 (%)</label>
-                            <input type="number" id="total-ur-rate" value="1" step="0.1" min="0">
+                            <input type="number" id="total-ur-rate" value="2" step="0.1" min="0">
                         </div>
                         <div class="setting-item">
                             <label for="target-card-multiplier">ピックアップ1種あたりの倍率 (倍)</label>

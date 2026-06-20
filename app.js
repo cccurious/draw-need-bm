@@ -190,16 +190,32 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const pulls = simulatePulls(pSpecific, numCards, needs, initialTickets, probPercent);
-        const earnedTickets = Math.floor(pulls / 40);
-        
-        let batches = Math.floor(pulls / 60);
-        let singles = pulls % 60;
-        let singlesCost = singles * 100;
-        if (singlesCost >= 5000) { singlesCost = 5000; }
-        const totalBM = batches * 5000 + singlesCost;
+        // Show loading state
+        const originalText = calcBtn.innerHTML;
+        calcBtn.disabled = true;
+        calcBtn.innerHTML = '<span class="spinner"></span>計算中...';
+        calcBtn.style.opacity = '0.8';
+        calcBtn.style.cursor = 'not-allowed';
 
-        showResult(totalBM, pulls, earnedTickets);
+        // Yield to browser rendering before heavy calculation
+        setTimeout(() => {
+            const pulls = simulatePulls(pSpecific, numCards, needs, initialTickets, probPercent);
+            const earnedTickets = Math.floor(pulls / 40);
+            
+            let batches = Math.floor(pulls / 60);
+            let singles = pulls % 60;
+            let singlesCost = singles * 100;
+            if (singlesCost >= 5000) { singlesCost = 5000; }
+            const totalBM = batches * 5000 + singlesCost;
+
+            showResult(totalBM, pulls, earnedTickets);
+
+            // Restore button
+            calcBtn.disabled = false;
+            calcBtn.innerHTML = originalText;
+            calcBtn.style.opacity = '1';
+            calcBtn.style.cursor = 'pointer';
+        }, 50);
     });
 
     function simulatePulls(P_target, typesCount, needs, initialTickets, probPercent) {

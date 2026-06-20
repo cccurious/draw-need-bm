@@ -398,11 +398,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const pSpecific = (1 * multiplier) / ((numCards * multiplier) + otherCards) * urRate;
             const P_any_target = pSpecific * numCards;
 
-            // B案: 獲得チケット枚数を計算し、10枚につき1枚のカードと交換したとみなして純粋な引きを算出する
+            const currentTickets = parseInt(document.getElementById('current-tickets').value) || 0;
+
+            // B案: 獲得チケット枚数を計算し、手持ちチケット分を差し引いて消費済みチケットを割り出す
             // 40回で1チケット
             const earnedTickets = Math.floor(pulls / 40);
-            // 10チケットで1枚交換
-            const exchangedCards = Math.floor(earnedTickets / 10);
+            
+            // 獲得したはずのチケットより現在所持チケットが少ない場合、その差分を消費したとみなす
+            const spentTickets = Math.max(0, earnedTickets - currentTickets);
+
+            // 10チケット消費で1枚のカードと交換したとみなして純粋な引きを算出する
+            const exchangedCards = Math.floor(spentTickets / 10);
             
             let totalCurrent = stateLuck.reduce((sum, state) => sum + state.current, 0);
             let pureGachaHits = Math.max(0, totalCurrent - exchangedCards);

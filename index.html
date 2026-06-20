@@ -2,40 +2,114 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>draw-need-bm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DrawNeed BM</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <aside class="sidebar">
-            <div class="logo">DrawNeed BM</div>
-            <nav>
-                <ul>
-                    <li class="active"><a href="#">ダッシュボード</a></li>
-                    <li><a href="#">キャンバス</a></li>
-                    <li><a href="#">設定</a></li>
-                </ul>
-            </nav>
-            <button id="theme-toggle" class="theme-btn">🌙 ダークモード</button>
-        </aside>
-        <main class="main-content">
-            <header>
-                <h1>ようこそ、draw-need-bm へ</h1>
-            </header>
-            <section class="content-area">
-                <p>ここに機能が追加されていきます。</p>
-                <!-- UI要素のプレースホルダー -->
-                <div class="card-grid">
-                    <div class="card">
-                        <h3>機能 1</h3>
-                        <p>詳細な要件をお待ちしています。</p>
+    <header class="header">
+        <img src="assets/logo.png" alt="DrawNeed BM Logo" class="logo">
+        <button class="menu-btn" id="menu-btn" aria-label="Menu">
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <nav class="side-menu" id="side-menu">
+        <div class="menu-header">メニュー</div>
+        <ul>
+            <li><a href="#" class="active">ダッシュボード</a></li>
+            <li><a href="#" class="disabled">履歴・判定（準備中）</a></li>
+            <li><a href="#" class="disabled">設定（準備中）</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menu-overlay"></div>
+
+    <main class="main-content">
+        <section class="card-section">
+            <div class="card-display" id="card-display">
+                <!-- Cards injected via JS -->
+            </div>
+        </section>
+
+        <section class="input-section">
+            <div class="stepper-group">
+                <label>現在の目玉所持枚数</label>
+                <div class="stepper">
+                    <button class="stepper-btn" id="curr-minus">-</button>
+                    <input type="number" id="current-cards" value="0" min="0" readonly>
+                    <button class="stepper-btn" id="curr-plus">+</button>
+                </div>
+            </div>
+
+            <div class="stepper-group">
+                <label>目的の目玉所持枚数</label>
+                <div class="stepper">
+                    <button class="stepper-btn" id="target-minus">-</button>
+                    <input type="number" id="target-cards" value="1" min="1" readonly>
+                    <button class="stepper-btn" id="target-plus">+</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="settings-section">
+            <details class="advanced-settings">
+                <summary>詳細設定</summary>
+                <div class="settings-content">
+                    <div class="setting-item">
+                        <label>目標確率: <span id="prob-val">50</span>%</label>
+                        <input type="range" id="probability-slider" min="1" max="99" value="50">
+                        <small>※指定した確率で揃うための必要BMを計算します</small>
+                    </div>
+
+                    <div class="template-buttons">
+                        <button class="tmpl-btn" data-type="2">2種ピック</button>
+                        <button class="tmpl-btn" data-type="3">3種ピック</button>
+                        <button class="tmpl-btn" data-type="4">4種ピック</button>
+                    </div>
+
+                    <div class="setting-item">
+                        <label>目玉カードの枚数</label>
+                        <input type="number" id="target-card-count" value="2" min="1">
+                    </div>
+                    <div class="setting-item">
+                        <label>目玉カードの倍率</label>
+                        <input type="number" id="target-card-multiplier" value="15" min="1">
+                    </div>
+                    <div class="setting-item">
+                        <label>目玉カード外の枚数</label>
+                        <input type="number" id="other-card-count" value="80" min="0">
+                    </div>
+                    <div class="setting-item">
+                        <label>全体UR確率 (%)</label>
+                        <input type="number" id="total-ur-rate" value="2" min="0.1" step="0.1">
                     </div>
                 </div>
-            </section>
-        </main>
+            </details>
+        </section>
+
+        <button id="calculate-btn" class="primary-btn">必要BMを計算する</button>
+
+        <section id="result-section" class="result-section hidden">
+            <h2 id="result-title"></h2>
+            <div class="result-card">
+                <div class="result-bm"><span id="result-bm">0</span> BM</div>
+                <div class="result-pulls">（約 <span id="result-pulls">0</span> 連）</div>
+            </div>
+            <p class="result-note">※天井（400連で1枚確定）を含んだシミュレーション結果です。</p>
+        </section>
+    </main>
+
+    <div class="support-banner" id="support-banner">
+        <img src="assets/banner.png" alt="" class="banner-bg">
+        <div class="banner-content">
+            <span class="code-text">応援コード C-VtNQ</span>
+            <button id="copy-btn" class="copy-btn">コピー</button>
+        </div>
     </div>
+    
+    <div id="toast" class="toast hidden">Thank you!</div>
+
     <script src="app.js"></script>
 </body>
 </html>

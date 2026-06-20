@@ -27,13 +27,13 @@
 
     <main class="main-content">
         <section class="card-inputs">
-            <h3>現在の目玉所持枚数</h3>
-            <div id="current-cards-container" class="card-list"></div>
+            <h3 class="section-title">現在のピックアップ所持枚数</h3>
+            <div id="current-cards-container" class="card-grid"></div>
         </section>
 
         <section class="card-inputs">
-            <h3>目的の目玉所持枚数</h3>
-            <div id="target-cards-container" class="card-list"></div>
+            <h3 class="section-title">目的のピックアップ所持枚数</h3>
+            <div id="target-cards-container" class="card-grid"></div>
         </section>
 
         <section class="settings-section">
@@ -50,17 +50,18 @@
                     </div>
 
                     <div class="template-buttons">
-                        <button class="tmpl-btn" data-type="2">2種ピック</button>
-                        <button class="tmpl-btn active" data-type="3">3種ピック</button>
-                        <button class="tmpl-btn" data-type="4">4種ピック</button>
+                        <button class="tmpl-btn" data-type="2">2種</button>
+                        <button class="tmpl-btn active" data-type="3">3種</button>
+                        <button class="tmpl-btn" data-type="4">4種</button>
+                        <button class="tmpl-btn" data-type="5">5種</button>
                     </div>
 
                     <div class="setting-item">
-                        <label>目玉カードの倍率</label>
+                        <label>ピックアップカードの倍率</label>
                         <input type="number" id="target-card-multiplier" value="15" min="1">
                     </div>
                     <div class="setting-item">
-                        <label>目玉カード外の枚数</label>
+                        <label>ピックアップ外の枚数</label>
                         <input type="number" id="other-card-count" value="80" min="0">
                     </div>
                     <div class="setting-item">
@@ -85,16 +86,23 @@
     <!-- Formula Modal -->
     <div class="modal" id="formula-modal">
         <div class="modal-content">
-            <h3>計算式について</h3>
-            <p><strong>特定の目玉カード1枚を引く確率:</strong></p>
+            <h3>計算アルゴリズムの詳細</h3>
+            
+            <p class="formula-label"><strong>1. 1回のガチャでの個別排出確率:</strong></p>
             <div class="formula">
-                (1 × 目玉倍率) / <br>
-                ((目玉種類数 × 目玉倍率) + 目玉外枚数) <br>
+                P = (1 × ピックアップ倍率) / <br>
+                ((PU種類数 × PU倍率) + PU外枚数) <br>
                 × 全体UR確率(%)
             </div>
-            <p><strong>天井仕様の考慮:</strong></p>
-            <p>ガチャ40連ごとに「選べるURチケット」を1枚獲得します。10枚集めると任意の目玉カードと交換できます。</p>
-            <p>シミュレーションでは、<strong>各カードの不足枚数の合計が、現在交換可能な枚数（所持チケット÷10）以下になった時点</strong>をゴールとして計算しています。</p>
+            
+            <p class="formula-label"><strong>2. モンテカルロ法によるシミュレーション:</strong></p>
+            <ul class="formula-list">
+                <li>ガチャを1回引き、乱数を用いて各ピックアップカードが排出されたかを個別に判定します。</li>
+                <li>ガチャ40連ごとに「選べるURチケット」を1枚獲得します。</li>
+                <li><strong>コンプリート判定:</strong> 「各ピックアップカードの目標までの不足枚数の合計」が「現在交換可能な枚数（所持チケット÷10）」以下になった時点で、その回のシミュレーションを終了し、かかった連数を記録します。</li>
+                <li>これを<strong>10,000回</strong>繰り返し、指定した確率（例：50%）に応じた分位数（指定確率の人がその連数以内で揃うライン）を算出しています。</li>
+            </ul>
+
             <button class="close-modal-btn" id="close-modal-btn">閉じる</button>
         </div>
     </div>

@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
         cardState.forEach((state, i) => {
             const colorSrc = cardColors[i % cardColors.length];
             
-            // Current Row
-            const currRow = document.createElement('div');
-            currRow.className = 'card-row';
-            currRow.innerHTML = `
+            // Current Item
+            const currItem = document.createElement('div');
+            currItem.className = 'card-item';
+            currItem.innerHTML = `
                 <img src="${colorSrc}" alt="Card">
                 <div class="stepper">
                     <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="-1">-</button>
@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="1">+</button>
                 </div>
             `;
-            currContainer.appendChild(currRow);
+            currContainer.appendChild(currItem);
 
-            // Target Row
-            const targetRow = document.createElement('div');
-            targetRow.className = 'card-row';
-            targetRow.innerHTML = `
+            // Target Item
+            const targetItem = document.createElement('div');
+            targetItem.className = 'card-item';
+            targetItem.innerHTML = `
                 <img src="${colorSrc}" alt="Card">
                 <div class="stepper">
                     <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="-1">-</button>
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="1">+</button>
                 </div>
             `;
-            targetContainer.appendChild(targetRow);
+            targetContainer.appendChild(targetItem);
         });
 
         // Attach events
@@ -127,10 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const otherCards = parseFloat(document.getElementById('other-card-count').value);
         const urRate = parseFloat(document.getElementById('total-ur-rate').value) / 100;
 
-        // P(Specific Target Card) = (1 * multiplier) / (numCards * multiplier + otherCards) * urRate
         const pSpecific = (1 * multiplier) / ((numCards * multiplier) + otherCards) * urRate;
 
-        // Gather needed copies
         let needs = cardState.map(s => Math.max(0, s.target - s.current));
         let totalNeeds = needs.reduce((a, b) => a + b, 0);
 
@@ -160,17 +158,15 @@ document.addEventListener('DOMContentLoaded', () => {
             let currentNeeds = [...needs];
             
             while(true) {
-                // Check if we reached goal using available tickets
                 let totalDeficit = currentNeeds.reduce((a, b) => a + b, 0);
                 let availableExchanges = Math.floor(tickets / 10);
                 
                 if (totalDeficit <= availableExchanges) {
-                    break; // Completed!
+                    break;
                 }
                 
                 pulls++;
                 
-                // Which card did we pull?
                 if (Math.random() < (P_target * typesCount)) {
                     let typeIdx = Math.floor(Math.random() * typesCount);
                     if (currentNeeds[typeIdx] > 0) {

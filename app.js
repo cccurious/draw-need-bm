@@ -368,9 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => resultSec.classList.add('show'), 10);
         setTimeout(() => { resultSec.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 100);
 
-        if (!supportBanner.classList.contains('show')) {
-            supportBanner.classList.add('show');
-        }
+        triggerSupportBanner();
     }
 
     // Luck Checker Logic
@@ -459,16 +457,33 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => luckResultSec.classList.add('show'), 10);
             setTimeout(() => { luckResultSec.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 100);
 
-            const supportBanner = document.getElementById('support-banner');
-            if (supportBanner && !supportBanner.classList.contains('show')) {
-                supportBanner.classList.add('show');
-            }
+            triggerSupportBanner();
         });
     }
 
     // Copy banner
     const copyBtn = document.getElementById('copy-btn');
-    const toast = document.getElementById('toast');
+    const toast = document.getElementById('copy-toast');
+
+    function triggerSupportBanner() {
+        const supportBanner = document.getElementById('support-banner');
+        if (supportBanner && !supportBanner.classList.contains('show')) {
+            const msg = document.getElementById('banner-msg');
+            const code = document.getElementById('banner-code');
+            if (msg && code) {
+                msg.classList.remove('hide');
+                code.classList.remove('show');
+            }
+            supportBanner.classList.add('show');
+            setTimeout(() => {
+                if (supportBanner.classList.contains('show') && msg && code) {
+                    msg.classList.add('hide');
+                    code.classList.add('show');
+                }
+            }, 2500);
+        }
+    }
+
     copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText('C-VtNQ').then(() => {
             toast.classList.remove('hidden');

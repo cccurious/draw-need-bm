@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
             currItem.innerHTML = `
                 <img src="${colorSrc}" alt="Card">
                 <div class="stepper">
-                    <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="-1">-</button>
+                    <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="-1" ${state.current <= 0 ? 'disabled' : ''}>-</button>
                     <input type="number" value="${state.current}" readonly>
-                    <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="1">+</button>
+                    <button class="stepper-btn" data-idx="${i}" data-type="curr" data-val="1" ${state.current >= 20 ? 'disabled' : ''}>+</button>
                 </div>
             `;
             currContainer.appendChild(currItem);
@@ -49,9 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
             targetItem.innerHTML = `
                 <img src="${colorSrc}" alt="Card">
                 <div class="stepper">
-                    <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="-1">-</button>
+                    <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="-1" ${state.target <= 0 ? 'disabled' : ''}>-</button>
                     <input type="number" value="${state.target}" readonly>
-                    <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="1">+</button>
+                    <button class="stepper-btn" data-idx="${i}" data-type="target" data-val="1" ${state.target >= 20 ? 'disabled' : ''}>+</button>
                 </div>
             `;
             targetContainer.appendChild(targetItem);

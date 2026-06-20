@@ -114,6 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
     menuBtn.addEventListener('click', toggleMenu);
     menuOverlay.addEventListener('click', toggleMenu);
 
+    // Accordion Logic
+    const advancedToggle = document.getElementById('advanced-settings-toggle');
+    const advancedContent = document.getElementById('advanced-settings-content');
+    advancedToggle.addEventListener('click', () => {
+        advancedToggle.classList.toggle('open');
+        advancedContent.classList.toggle('open');
+    });
+
     // Modal
     const formulaBtn = document.getElementById('menu-about');
     const formulaModal = document.getElementById('formula-modal');

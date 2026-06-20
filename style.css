@@ -156,19 +156,38 @@ body {
     color: var(--text-color);
 }
 
-/* Subdued Settings */
-.advanced-settings { margin-bottom: 24px; text-align: center; }
-.advanced-settings summary {
-    font-size: 0.9rem; color: var(--subdued-text); cursor: pointer; list-style: none; outline: none;
-    display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 20px; 
-    background: #edf2f7; transition: background 0.2s; border: 1px solid #cbd5e0;
+/* Accordion Settings */
+.accordion-section { margin-bottom: 24px; }
+.accordion-header {
+    width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;
+    padding: 14px; font-size: 0.95rem; color: var(--text-color); font-weight: bold;
+    background: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+    cursor: pointer; transition: all 0.2s; outline: none;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.05);
 }
-.advanced-settings summary::-webkit-details-marker { display: none; }
-.advanced-settings summary:active { background: #e2e8f0; }
+.accordion-header:active { background: #edf2f7; transform: translateY(1px); box-shadow: 1px 1px 0px rgba(0,0,0,0.05); }
+.accordion-header.open {
+    border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+    border-bottom-color: transparent; box-shadow: none;
+}
+.accordion-header .chevron { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.8rem; color: var(--subdued-text); }
+.accordion-header.open .chevron { transform: rotate(180deg); }
 
+.accordion-content-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.accordion-content-wrapper.open {
+    grid-template-rows: 1fr;
+}
+.accordion-inner {
+    overflow: hidden;
+}
 .settings-content {
-    padding: 20px; margin-top: 12px; background: var(--white); text-align: left;
-    border-radius: 12px; font-size: 0.9rem; border: 2px solid var(--dark-border);
+    padding: 20px; background: var(--white); text-align: left;
+    border-radius: 0 0 12px 12px; border: 2px solid var(--border-color); border-top: none;
+    font-size: 0.9rem;
     box-shadow: 2px 2px 0px rgba(0,0,0,0.05);
 }
 .setting-item { margin-top: 16px; display: flex; flex-direction: column; }

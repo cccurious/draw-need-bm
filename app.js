@@ -65,9 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const val = parseInt(e.target.dataset.val);
                 
                 if (type === 'curr') {
-                    cardState[idx].current = Math.max(0, cardState[idx].current + val);
+                    cardState[idx].current = Math.max(0, Math.min(20, cardState[idx].current + val));
                 } else {
-                    cardState[idx].target = Math.max(0, cardState[idx].target + val);
+                    cardState[idx].target = Math.max(0, Math.min(20, cardState[idx].target + val));
                 }
                 renderCards();
             });

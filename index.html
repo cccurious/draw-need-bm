@@ -51,7 +51,7 @@
 
         <section class="settings-section">
             <details class="advanced-settings">
-                <summary>⚙ 詳細設定（ガチャ確率など）</summary>
+                <summary>⚙ 詳細設定</summary>
                 <div class="settings-content">
                     <div class="setting-item">
                         <label>手持ちの選べるURチケット</label>
@@ -74,13 +74,13 @@
             </details>
         </section>
 
-        <button id="calc-btn" class="primary-btn">いくら必要か予測する！</button>
+        <button id="calc-btn" class="primary-btn">計算実行</button>
 
         <section id="result-section" class="result-section hidden">
             <h2>目標枚数を揃えるための目安は...</h2>
             <h1 id="result-bm" style="font-size: 2.5rem; margin: 12px 0; color: var(--primary-color);">--- BM</h1>
             <div id="result-pulls" class="result-pulls">合計 ---連 (選べるURチケット ---枚GET)</div>
-            <p class="result-note">※裏側で2000回ガチャを回したシミュレーションの「中央値」です！<br>あくまで確率上の目安なので、うのみにせず「これくらいあれば安心かな？」という参考程度に楽しんでくださいね！</p>
+            <p class="result-note">※裏側でシミュレーションを行った「中央値」になります。<br>あくまで確率上の目安となるため、「これくらいあれば安心かな？」という参考程度にしてください。</p>
         </section>
     </main>
 
@@ -91,13 +91,13 @@
             <p>このツールは、指定した目標に到達するまでに必要なBMを、プログラムで実際にガチャを引く「シミュレーション」を行って予測しています。</p>
             
             <div class="formula-label">1. ガチャの仕様を完全再現</div>
-            <p>設定された「UR出現確率」や「ピックアップ倍率」を使ってガチャを回し、40連ごとに貰える「選べるURチケット」での交換もしっかり計算に入れています。</p>
+            <p>設定された「UR出現確率」や「ピックアップ倍率」を使ってガチャを回し、40連ごとに貰える「選べるURチケット」での交換も計算に含めています。</p>
 
-            <div class="formula-label">2. 2000回のテストで平均（目安）を算出</div>
-            <p>「たまたま神引きした」「沼った」というブレをなくすため、裏側で<strong>2000回</strong>もシミュレーションを行い、最も多く落ち着いた数値（中央値）を表示しています。</p>
+            <div class="formula-label">2. シミュレーションで平均（目安）を算出</div>
+            <p>「たまたま神引きした」「沼った」というブレをなくすため、裏側で2000回ほどシミュレーションを行い、最も多く落ち着いた数値（中央値）を表示しています。</p>
 
-            <div class="formula-label" style="color: #e53e3e; border-left-color: #e53e3e;">⚠️ あくまで参考程度に！</div>
-            <p>ガチャは確率なので、表示されたBMを用意すれば100%揃うというわけではありません。結果をうのみにせず、「これくらいあれば確率的には揃いそうだな〜」という<strong>参考程度に楽しんでくださいね！</strong></p>
+            <div class="formula-label" style="color: #e53e3e; border-left-color: #e53e3e;">⚠️ あくまで参考程度に</div>
+            <p>ガチャは確率なので、表示されたBMを用意すれば100%揃うというわけではありません。「これくらいあれば確率的には揃いそうだな〜」という参考程度にお楽しみください</p>
 
             <button class="close-modal-btn" id="close-modal-btn">閉じる</button>
         </div>

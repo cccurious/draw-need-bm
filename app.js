@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             switch(type) {
                 case 2: multiplierInput.value = 28; break;
-                case 3: multiplierInput.value = 24; break;
+                case 3: multiplierInput.value = 28; break;
                 case 4: multiplierInput.value = 21; break;
                 case 5: multiplierInput.value = 21; break;
             }

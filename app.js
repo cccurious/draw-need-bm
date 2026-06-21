@@ -374,8 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const resetBmBtn = document.getElementById('reset-bm-btn');
     if (resetBmBtn) {
-        resetBmBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        resetBmBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo(0, 0);
             resultSec.classList.remove('show');
             setTimeout(() => resultSec.classList.add('hidden'), 300);
         });
@@ -473,8 +474,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const resetLuckBtn = document.getElementById('reset-luck-btn');
     if (resetLuckBtn) {
-        resetLuckBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        resetLuckBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo(0, 0);
             luckResultSec.classList.remove('show');
             setTimeout(() => luckResultSec.classList.add('hidden'), 300);
         });

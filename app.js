@@ -324,8 +324,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const runs = 5000; 
         let results = new Int32Array(runs);
         
-        // Fixed seed so the random sequence is EXACTLY the same for every click
-        const prng = mulberry32(1234567);
+        // Dynamic seed so results fluctuate per calculation
+        const seed = Math.floor(Math.random() * 0xFFFFFFFF);
+        const prng = mulberry32(seed);
         
         for(let i = 0; i < runs; i++) {
             let pulls = 0;
@@ -369,6 +370,15 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { resultSec.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 100);
 
         triggerSupportBanner();
+    }
+
+    const resetBmBtn = document.getElementById('reset-bm-btn');
+    if (resetBmBtn) {
+        resetBmBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            resultSec.classList.remove('show');
+            setTimeout(() => resultSec.classList.add('hidden'), 300);
+        });
     }
 
     // Luck Checker Logic
@@ -458,6 +468,15 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => { luckResultSec.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 100);
 
             triggerSupportBanner();
+        });
+    }
+
+    const resetLuckBtn = document.getElementById('reset-luck-btn');
+    if (resetLuckBtn) {
+        resetLuckBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            luckResultSec.classList.remove('show');
+            setTimeout(() => luckResultSec.classList.add('hidden'), 300);
         });
     }
 

@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             while(true) {
                 let totalDeficit = currentNeeds.reduce((a, b) => a + b, 0);
-                let availableExchanges = Math.floor(tickets / 10);
+                let availableExchanges = Math.floor(tickets / 20);
                 
                 if (totalDeficit <= availableExchanges) {
                     break;
@@ -416,8 +416,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // 獲得したはずのチケットより現在所持チケットが少ない場合、その差分を消費したとみなす
             const spentTickets = Math.max(0, earnedTickets - currentTickets);
 
-            // 10チケット消費で1枚のカードと交換したとみなして純粋な引きを算出する
-            const exchangedCards = Math.floor(spentTickets / 10);
+            // 20チケット消費で1枚のカードと交換したとみなして純粋な引きを算出する
+            const exchangedCards = Math.floor(spentTickets / 20);
             
             let totalCurrent = stateLuck.reduce((sum, state) => sum + state.current, 0);
             let pureGachaHits = Math.max(0, totalCurrent - exchangedCards);

@@ -178,9 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update Header
             if (viewId === 'bm') {
-                headerTitle.innerText = '必要BM予測ツール';
+                headerTitle.innerText = '必要BM予測';
             } else {
-                headerTitle.innerText = 'ガチャ運 偏差値判定ツール';
+                headerTitle.innerText = 'ガチャ運 偏差値判定';
             }
 
             toggleMenu(); // close side menu

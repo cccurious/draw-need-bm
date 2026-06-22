@@ -486,27 +486,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyBtn = document.getElementById('copy-btn');
     const toast = document.getElementById('toast');
 
+    let bannerInterval = null;
+    let bannerClosed = false;
+
     function triggerSupportBanner() {
+        if (bannerClosed) {
+            return; // ページリロードされるまで表示しない
+        }
+        
         const supportBanner = document.getElementById('support-banner');
         if (supportBanner && !supportBanner.classList.contains('show')) {
             const msg = document.getElementById('banner-msg');
             const code = document.getElementById('banner-code');
             if (msg && code) {
-                msg.classList.remove('hide');
-                code.classList.remove('show');
+                msg.classList.remove('slide-in', 'slide-out');
+                code.classList.remove('slide-in', 'slide-out');
             }
             supportBanner.classList.add('show');
-            setTimeout(() => {
-                if (supportBanner.classList.contains('show') && msg && code) {
-                    msg.classList.add('hide');
-                    code.classList.add('show');
+            
+            if (bannerInterval) clearInterval(bannerInterval);
+            
+            let showingMsg = true;
+            bannerInterval = setInterval(() => {
+                if (!supportBanner.classList.contains('show')) {
+                    clearInterval(bannerInterval);
+                    return;
                 }
-            }, 2500);
+                showingMsg = !showingMsg;
+                if (showingMsg && msg && code) {
+                    msg.classList.remove('slide-out');
+                    msg.classList.add('slide-in');
+                    code.classList.remove('slide-in');
+                    code.classList.add('slide-out');
+                } else if (!showingMsg && msg && code) {
+                    msg.classList.remove('slide-in');
+                    msg.classList.add('slide-out');
+                    code.classList.remove('slide-out');
+                    code.classList.add('slide-in');
+                }
+            }, 3000); // 3秒ごとに切り替え
         }
     }
 
     copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText('C-VtNQ').then(() => {
+            // 一度コピー/閉じるを押したら、リロードするまでは二度と表示しない
+            bannerClosed = true;
+            
             toast.classList.remove('hidden');
             setTimeout(() => toast.classList.add('show'), 10);
             setTimeout(() => {
@@ -516,6 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const supportBanner = document.getElementById('support-banner');
             if (supportBanner) {
                 supportBanner.classList.remove('show');
+                if (bannerInterval) clearInterval(bannerInterval);
             }
         });
     });

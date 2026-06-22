@@ -33,7 +33,10 @@
 
     <main class="main-content">
         <section class="template-section">
-            <h3 class="section-title" style="margin-bottom: 12px; font-size: 0.95rem;">テンプレート選択</h3>
+            <h3 class="section-title" style="margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                テンプレート選択
+                <img src="assets/help.svg" class="help-icon" data-help="template" alt="help">
+            </h3>
             <div class="template-buttons">
                 <button class="tmpl-btn" data-type="2">2種</button>
                 <button class="tmpl-btn active" data-type="3">3種</button>
@@ -45,23 +48,33 @@
         <!-- BM Calculator View -->
         <div id="view-bm-calc" class="view-section active">
             <section class="card-inputs">
-                <h3 class="section-title">現在のピックアップ所持枚数</h3>
+                <h3 class="section-title" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    現在のピックアップ所持枚数
+                    <img src="assets/help.svg" class="help-icon" data-help="current" alt="help">
+                </h3>
                 <div class="bulk-actions" data-target="bm-current">
                     <span>一括設定:</span>
-                    <button class="bulk-btn" data-val="0">0枚</button>
-                    <button class="bulk-btn" data-val="11">11枚</button>
-                    <button class="bulk-btn" data-val="20">20枚</button>
+                    <button class="bulk-btn" data-val="0">0</button>
+                    <button class="bulk-btn" data-val="1">1</button>
+                    <button class="bulk-btn" data-val="5">5</button>
+                    <button class="bulk-btn" data-val="11">11</button>
+                    <button class="bulk-btn" data-val="20">20</button>
                 </div>
                 <div id="current-cards-bm" class="card-grid"></div>
             </section>
 
             <section class="card-inputs">
-                <h3 class="section-title">目標のピックアップ所持枚数</h3>
+                <h3 class="section-title" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    目標のピックアップ所持枚数
+                    <img src="assets/help.svg" class="help-icon" data-help="target" alt="help">
+                </h3>
                 <div class="bulk-actions" data-target="bm-target">
                     <span>一括設定:</span>
-                    <button class="bulk-btn" data-val="0">0枚</button>
-                    <button class="bulk-btn" data-val="11">11枚</button>
-                    <button class="bulk-btn" data-val="20">20枚</button>
+                    <button class="bulk-btn" data-val="0">0</button>
+                    <button class="bulk-btn" data-val="1">1</button>
+                    <button class="bulk-btn" data-val="5">5</button>
+                    <button class="bulk-btn" data-val="11">11</button>
+                    <button class="bulk-btn" data-val="20">20</button>
                 </div>
                 <div id="target-cards-bm" class="card-grid"></div>
             </section>
@@ -108,18 +121,26 @@
         <!-- Luck Checker View -->
         <div id="view-luck-checker" class="view-section hidden">
             <section class="card-inputs">
-                <h3 class="section-title">現在のピックアップ所持枚数</h3>
+                <h3 class="section-title" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    現在のピックアップ所持枚数
+                    <img src="assets/help.svg" class="help-icon" data-help="current" alt="help">
+                </h3>
                 <div class="bulk-actions" data-target="luck-current">
                     <span>一括設定:</span>
-                    <button class="bulk-btn" data-val="0">0枚</button>
-                    <button class="bulk-btn" data-val="11">11枚</button>
-                    <button class="bulk-btn" data-val="20">20枚</button>
+                    <button class="bulk-btn" data-val="0">0</button>
+                    <button class="bulk-btn" data-val="1">1</button>
+                    <button class="bulk-btn" data-val="5">5</button>
+                    <button class="bulk-btn" data-val="11">11</button>
+                    <button class="bulk-btn" data-val="20">20</button>
                 </div>
                 <div id="current-cards-luck" class="card-grid"></div>
             </section>
 
             <section class="card-inputs">
-                <h3 class="section-title">これまで回したガチャの合計回数</h3>
+                <h3 class="section-title" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    これまで回したガチャの合計回数
+                    <img src="assets/help.svg" class="help-icon" data-help="pulls" alt="help">
+                </h3>
                 <div style="padding: 12px 16px;">
                     <input type="number" id="luck-pulls-input" value="0" min="0" placeholder="例: 300" style="width: 100%; box-sizing: border-box; font-size: 1.1rem; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; outline: none; transition: border-color 0.2s;">
                 </div>
@@ -181,6 +202,11 @@
     </div>
     
     <div id="toast" class="toast hidden">Thank you!</div>
+
+    <!-- Help Tooltip -->
+    <div id="help-tooltip" class="help-tooltip hidden">
+        <div class="help-tooltip-content"></div>
+    </div>
 
     <script src="app.js"></script>
 </body>

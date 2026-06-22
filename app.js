@@ -9,14 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Config state
     let numCards = 3;
-    let stateBm = []; // [{current: 0, target: 20, colorIdx: 0}, ...]
+    let stateBm = []; // [{current: 0, target: 1, colorIdx: 0}, ...]
     let stateLuck = []; // [{current: 0, colorIdx: 0}, ...]
 
     function initCardState(count) {
         stateBm = [];
         stateLuck = [];
         for(let i=0; i<count; i++) {
-            stateBm.push({ current: 0, target: 20, colorIdx: i % 4 });
+            stateBm.push({ current: 0, target: 1, colorIdx: i % 4 });
             stateLuck.push({ current: 0, colorIdx: i % 4 });
         }
         renderAllGrids();
@@ -518,5 +518,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 supportBanner.classList.remove('show');
             }
         });
+    });
+
+    // Help Tooltip Logic
+    const helpTooltip = document.getElementById('help-tooltip');
+    const tooltipContent = helpTooltip.querySelector('.help-tooltip-content');
+
+    const helpTexts = {
+        'template': '引きたいガチャの『ピックアップ対象カード』が何種類あるかを指定します。',
+        'current': '現在所持している枚数を設定します。\n\n所持枚数の設定に加えて「詳細設定」から現在所持している『選べるURチケット』を含めて計算することも可能です。\n\n また、絵柄をタップするとカードの属性（色）を変更できます。',
+        'target': '最終的に目指す枚数を設定します。\n\n現在の枚数との差分を計算し、必要なBMを予測します。',
+        'pulls': 'これまで対象ガチャを回した合計回数を入力します。\n\n回数に応じて獲得できた『選べるURチケット』の枚数を自動で差し引いて判定します。'
+    };
+
+    document.querySelectorAll('.help-icon').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const type = e.target.dataset.help;
+            if (helpTexts[type]) {
+                tooltipContent.innerText = helpTexts[type];
+                
+                const rect = e.target.getBoundingClientRect();
+                
+                tooltipContent.style.top = `${rect.bottom + 8}px`;
+                
+                const tooltipWidth = Math.min(280, window.innerWidth - 32);
+                tooltipContent.style.width = `${tooltipWidth}px`;
+                
+                let leftPos = rect.left + rect.width / 2 - tooltipWidth / 2;
+                if (leftPos < 16) leftPos = 16;
+                if (leftPos + tooltipWidth > window.innerWidth - 16) {
+                    leftPos = window.innerWidth - 16 - tooltipWidth;
+                }
+                tooltipContent.style.left = `${leftPos}px`;
+                
+                const pointerLeft = rect.left + rect.width / 2 - leftPos;
+                tooltipContent.style.setProperty('--pointer-left', `${pointerLeft}px`);
+                
+                helpTooltip.classList.remove('hidden');
+                setTimeout(() => helpTooltip.classList.add('show'), 10);
+            }
+        });
+    });
+
+    helpTooltip.addEventListener('click', () => {
+        helpTooltip.classList.remove('show');
+        setTimeout(() => helpTooltip.classList.add('hidden'), 200);
+    });
+
+    document.addEventListener('click', () => {
+        if (helpTooltip.classList.contains('show')) {
+            helpTooltip.classList.remove('show');
+            setTimeout(() => helpTooltip.classList.add('hidden'), 200);
+        }
     });
 });
